@@ -54,7 +54,8 @@ python src/phone_client.py \
   --server-url http://YOUR_SERVER_IP:8080 \
   --imei "123456789012345" \
   --phone-number "+15555550100" \
-  --interval 10
+  --interval 10 \
+  --consent-granted
 ```
 
 #### Android + Termux GPS integration
@@ -62,6 +63,11 @@ If `termux-location` exists, the client uses it automatically for live GPS.
 Otherwise, it falls back to manual or simulated coordinates.
 
 ## API protocol
+
+
+### `GET /api/v1/devices`
+Returns latest known check-in data for all registered devices.
+
 
 ### `POST /api/v1/heartbeat`
 Body:
@@ -71,7 +77,8 @@ Body:
   "phone_number": "+15555550100",
   "lat": 37.4219983,
   "lon": -122.084,
-  "timestamp": "2026-01-01T12:34:56Z"
+  "timestamp": "2026-01-01T12:34:56Z",
+  "consent_granted": true
 }
 ```
 
@@ -93,4 +100,5 @@ Both endpoints require header:
 ## Notes
 
 - Use only with explicit owner consent.
+- Client execution requires `--consent-granted`, and the server rejects heartbeats without `consent_granted: true`.
 - This is for device management and anti-loss workflows, not surveillance.
